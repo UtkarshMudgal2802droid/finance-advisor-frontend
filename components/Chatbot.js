@@ -25,10 +25,16 @@ export default function Chatbot() {
     setQuestion("");
 
     try {
-      const res = await axios.post("http://localhost:8000/chat", {
-        question,
-        history: newMessages.map((m) => `${m.sender === 'user' ? 'You' : 'Bot'}: ${m.text}`).join("\n"),
-      });
+      const res = await axios.post(
+  `${import.meta.env.VITE_BACKEND_URL}/chat`,
+  {
+    question,
+    history: newMessages
+      .map((m) => `${m.sender === "user" ? "You" : "Bot"}: ${m.text}`)
+      .join("\n"),
+  }
+);
+
       setMessages([...newMessages, { sender: "bot", text: res.data.reply }]);
     } catch {
       setMessages([...newMessages, { sender: "bot", text: "❌ Server error" }]);
