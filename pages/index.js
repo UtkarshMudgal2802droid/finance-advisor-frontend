@@ -4,7 +4,6 @@ import {
   Container,
   Grid,
   Card,
-  CardContent,
   Avatar,
   useTheme,
   useMediaQuery,
@@ -30,7 +29,7 @@ export default function Home() {
       <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
         <Header />
 
-        <Box component="main" sx={{ flexGrow: 1, px: { xs: 2, sm: 3 }, pt: 10, pb: 4 }}>
+        <Box component="main" sx={{ flexGrow: 1, px: { xs: 1.5, sm: 2, md: 3 }, pt: 10, pb: 4 }}>
           <Container maxWidth="lg">
             <Typography
               variant={isMobile ? "h5" : "h4"}
@@ -48,6 +47,7 @@ export default function Home() {
               Track your financial performance and get personalized advice.
             </Typography>
 
+            {/* Overview Cards */}
             <Grid container spacing={3} mt={1}>
               {[
                 {
@@ -72,7 +72,7 @@ export default function Home() {
                 <Grid item xs={12} sm={6} md={4} key={i}>
                   <Card
                     sx={{
-                      p: 2,
+                      p: { xs: 1.5, sm: 2 },
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
@@ -88,10 +88,10 @@ export default function Home() {
                     }}
                   >
                     <Box>
-                      <Typography variant="subtitle2" color="text.secondary">
+                      <Typography variant="subtitle2" color="text.secondary" sx={{ fontSize: { xs: "0.85rem", sm: "0.9rem" } }}>
                         {card.title}
                       </Typography>
-                      <Typography variant="h5" fontWeight="bold" sx={{ color: card.color }}>
+                      <Typography variant="h6" fontWeight="bold" sx={{ color: card.color, fontSize: { xs: "1.2rem", sm: "1.5rem" } }}>
                         {card.value}
                       </Typography>
                     </Box>
@@ -116,6 +116,15 @@ export default function Home() {
                       autoplay
                       autoplaySpeed={4000}
                       arrows={false}
+                      responsive={[
+                        {
+                          breakpoint: 768,
+                          settings: {
+                            arrows: false,
+                            dots: true,
+                          },
+                        },
+                      ]}
                     >
                       {[
                         "📉 Aviation crash impacts airline stocks temporarily.",
