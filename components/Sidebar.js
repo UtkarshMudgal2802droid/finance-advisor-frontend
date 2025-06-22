@@ -7,7 +7,12 @@ import {
   ListItemIcon,
   Box,
   Toolbar,
+  useTheme,
+  useMediaQuery,
+  IconButton,
 } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
 
 // Icons
@@ -18,6 +23,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import PaymentIcon from "@mui/icons-material/Payment";
+import { useState } from "react";
 
 const drawerWidth = 240;
 
@@ -30,21 +36,22 @@ const menuItems = [
 ];
 
 export default function Sidebar() {
-  return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: drawerWidth,
-          boxSizing: "border-box",
-          backgroundColor: "#1a237e",
-          color: "#fff",
-        },
-      }}
-    >
-      <Toolbar />
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const drawerContent = (
+    <>
+      <Toolbar
+        sx={{ display: "flex", justifyContent: "space-between", color: "#fff" }}
+      >
+        Menu
+        {isMobile && (
+          <IconButton onClick={() => setMobileOpen(false)} sx={{ color: "#fff" }}>
+            <CloseIcon />
+          </IconButton>
+        )}
+      </Toolbar>
       <Box sx={{ overflow: "auto", mt: 2 }}>
         <List>
           {menuItems.map(({ text, href, icon }) => (
@@ -70,6 +77,61 @@ export default function Sidebar() {
           ))}
         </List>
       </Box>
-    </Drawer>
+    </>
+  );
+
+  return (
+    <>
+      {isMobile ? (
+        <>
+          <IconButton
+            onClick={() => setMobileOpen(true)}
+            sx={{
+              position: "fixed",
+              top: 16,
+              left: 16,
+              zIndex: 1302,
+              color: "#1a237e",
+              backgroundColor: "#fff",
+              boxShadow: 2,
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={() => setMobileOpen(false)}
+            ModalProps={{ keepMounted: true }}
+            sx={{
+              "& .MuiDrawer-paper": {
+                width: drawerWidth,
+                backgroundColor: "#1a237e",
+                color: "#fff",
+              },
+            }}
+          >
+            {drawerContent}
+          </Drawer>
+        </>
+      ) : (
+        <Drawer
+          variant="permanent"
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+              backgroundColor: "#1a237e",
+              color: "#fff",
+            },
+          }}
+        >
+          <Toolbar />
+          {drawerContent}
+        </Drawer>
+      )}
+    </>
   );
 }
