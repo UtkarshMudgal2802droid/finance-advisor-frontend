@@ -26,7 +26,7 @@ export default function Chatbot() {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/chat`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/chat`,
         {
           question,
           history: newMessages
@@ -36,6 +36,7 @@ export default function Chatbot() {
       );
       setMessages([...newMessages, { sender: "bot", text: res.data.reply }]);
     } catch (err) {
+      console.error("❌ Chat error:", err);
       setMessages([...newMessages, { sender: "bot", text: "❌ Server error" }]);
     }
   };
