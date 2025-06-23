@@ -74,8 +74,8 @@ export default function Header() {
 
   return (
     <>
-      <AppBar position="fixed" sx={{ zIndex: 1301, bgcolor: "primary.main" }}>
-        <Toolbar sx={{ justifyContent: "space-between", alignItems: "center" }}>
+      <AppBar position="fixed" sx={{ zIndex: 1301, bgcolor: "primary.main", top:0 }}>
+        <Toolbar sx={{ justifyContent: "space-between", alignItems: "center", minHeight: { xs: 50, sm: 60 }, }}>
           {/* Left side */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {isSmallScreen ? null : (

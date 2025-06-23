@@ -5,7 +5,6 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Box,
   Toolbar,
   IconButton,
   useTheme,
@@ -37,7 +36,12 @@ const menuItems = [
 export default function Sidebar() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isXs = useMediaQuery("(max-width:599px)");
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setMobileOpen(prev => !prev);
+  };
 
   const drawerContent = (
     <>
@@ -47,25 +51,29 @@ export default function Sidebar() {
           justifyContent: "space-between",
           alignItems: "center",
           px: 2,
-          py: 1.5,
+          py: isXs ? 0.5 : 1.5, // ⬅ reduced padding on xs
+          minHeight: isXs ? 48 : undefined, // ⬅ reduced height on xs
           bgcolor: "#1a237e",
           color: "#fff",
         }}
       >
         <Typography variant="subtitle1">Menu</Typography>
         {isMobile && (
-          <IconButton onClick={() => setMobileOpen(false)} sx={{ color: "#fff" }}>
+          <IconButton onClick={toggleDrawer} sx={{ color: "#fff" }}>
             <CloseIcon />
           </IconButton>
         )}
       </Toolbar>
+
       <Divider sx={{ borderColor: "rgba(255,255,255,0.1)" }} />
+
       <List>
         {menuItems.map(({ text, href, icon }) => (
           <Link href={href} passHref key={text} legacyBehavior>
             <ListItem
               button
               component="a"
+              onClick={() => isMobile && setMobileOpen(false)} // ✅ Close on item click
               sx={{
                 px: 3,
                 py: 1.5,
@@ -90,17 +98,16 @@ export default function Sidebar() {
     <>
       {isMobile && (
         <IconButton
-          onClick={() => setMobileOpen(true)}
+          onClick={toggleDrawer}
           sx={{
             position: "fixed",
-            top: 16,
+            top: isXs ? 8 : 12, // ⬅ Adjust top padding for smaller screens
             left: 16,
             zIndex: 1302,
-            color: "#1a237e",
-            backgroundColor: "#fff",
-            boxShadow: 2,
+            color: "white",
+            backgroundColor: "transparent",
             "&:hover": {
-              backgroundColor: "#e3e3e3",
+              backgroundColor: "transparent",
             },
           }}
         >
